@@ -1,0 +1,124 @@
+
+
+
+	<div class="userApplication_ContentContainer"> <!-- class="grid grid-pad">-->
+
+		<md-tab-group mat-center-tabs="true" id="uaTabGroup" [(selectedIndex)]="selectedIndex">
+
+			<div  *ngFor="let subFormEntry of formStruct.subForms">
+				<md-tab *ngIf="!subFormEntry.noneOwnTab"
+
+                (click)="select_subFormTab(subFormEntry.key)"
+                id="uaTab_+{{subFormEntry.key}}">
+					<ng-template md-tab-label class="my-mat-tab-label">
+            			<p class="my_md_tab_title">{{subFormEntry.title}}</p>
+
+            			<!--{{subFormEntry.title}}-->
+					</ng-template>
+
+					<form *ngIf="isFormDataLoaded==true" [formGroup]="main_FormGroup" >
+
+						<md-card class="ua-cardBg">
+
+							<md-card-content class="uacard-content" >
+
+
+								<dynamicSubForm
+												[input_mainForm]="main_FormGroup"
+												[input_subFormInfo]="subFormEntry"
+												>
+								</dynamicSubForm>
+
+								<label class="lbl-form_main_attention">* = {{'required' | translate}}</label>
+								<p class="lbl-form_main_attention"> {{'attentionSaveInfo' | translate}}</p>
+
+							</md-card-content>
+
+						</md-card>
+					</form>
+				</md-tab>
+
+			</div>
+
+		</md-tab-group>
+
+		<!--
+		<md-tab-group mat-center-tabs="true"  id="md-tab-group-bottom" [(selectedIndex)]="selectedIndex">
+
+			<div  *ngFor="let subFormEntry of formStruct.subForms">
+				<md-tab *ngIf="!subFormEntry.noneOwnTab"
+						(click)="select_subFormTab(subFormEntry.key)">
+					<ng-template md-tab-label class="my-mat-tab-label">
+						<p class="my_md_tab_title">{{subFormEntry.title}}</p>
+
+
+					</ng-template>
+				</md-tab>
+			</div>
+		</md-tab-group>
+		-->
+
+		<md-card [style.background]="'white'">
+
+			<!--
+			<div [style.padding-left]="'24px'">
+				<label class="lbl-form_main_attention">* = {{'required' | translate}}</label>
+				<p class="lbl-form_main_attention"> {{'attentionSaveInfo' | translate}}</p>
+
+			</div>
+
+			-->
+
+				<hr/>
+
+
+			<div align="center">
+
+				<button [disabled]="!(selectedIndex>0)" class="btn bs_submit_button" (click)="previousTab()">
+					<!--<i class="material-icons">arrow_drop_up</i>-->
+
+					<i class="mdi mdi-chevron-left mdi-20px"></i>
+					<!--{{ 'previousTab' | translate }}-->
+				</button>
+
+				<button [disabled]="!changeDetected"
+						type="button"
+						class="btn bs_submit_button"
+						(click)="saveFormObj()"
+				>{{ 'save' | translate }}
+				</button>
+
+				<button *ngIf="!mainFormValid"
+						class="btn bs_submit_button"
+						type="button" (click)="showMissingInput()">
+					{{ 'misEntry' | translate }}
+				</button>
+
+				<!--<a *ngIf="mainFormValid && !changeDetected"-->
+
+				<a *ngIf="changeDetected"
+					class="btn bs_submit_button"
+					(click)="goToParent(summaryPage_href)"
+				   role="button">
+					{{ 'goToSummary' | translate }}
+				</a>
+				<a *ngIf="!changeDetected"
+				   class="btn bs_submit_button"
+				   href="{{summaryPage_href}}"
+				   role="button">
+					{{ 'goToSummary' | translate }}
+				</a>
+
+				<button [disabled]="!(selectedIndex<formStruct.subForms.length-1)" class="btn bs_submit_button" (click)="nextTab()">
+					<!--{{ 'nextTab' | translate }}-->
+					<i class="mdi mdi-chevron-right mdi-20px"></i>
+				</button>
+			</div>
+
+
+		</md-card>
+
+
+
+	</div>
+
